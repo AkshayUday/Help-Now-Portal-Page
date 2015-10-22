@@ -1,0 +1,966 @@
+
+
+    <!-->Items below are managed by the Accelerator Application - Please do not delete<-->
+
+    <!-->Begin the HTML for your application below this line<-->
+    <!DOCTYPE html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+
+
+        <!--  All Styles Load Here-->
+
+
+        <style>
+            .footerbar {
+                background: transparent linear-gradient(to bottom, #3E3C3D 0%, #4F4B4C 15px) repeat scroll 0px 0px;
+                color: #D1D0D2;
+                font-size: 13px;
+                font-weight: 400;
+
+            }
+            .nav-green{
+                background-color: #6DB33F; !important;
+            }
+            #btnCreateTicket{
+                margin-right: 33px;
+                margin-top: 8px;
+            }
+            .navbar-brand {
+                color:#f4f4f4; !important;
+            }
+            #panel1 {
+                display: show;
+            }
+
+            #panel2 {
+                display: none;
+            }
+            #panel3 {
+                display: none;
+
+            }
+
+            .dropdown-toggle{
+                color:#f4f4f4; !important;
+            }
+
+            .dropdown-menu {
+                width: 300px; !important;
+                border-top-width: 4px; !important;
+                border-top-style: solid; !important;
+                border-top-color: rgb(102, 102, 102); !important;
+                box-shadow: rgba(0, 0, 0, 0.498039) 0px 8px 8px 2px; !important;
+                padding: 10px; !important;
+                border-radius: 0px; !important;
+                display: none; !important;
+                font-size:12px; !important;
+            }
+            #panelTicketsList, .panelTicketDetail {
+
+                max-height: 300px; !important;
+                overflow-y:scroll; !important;
+
+            }
+            #tickets,#approvals,#watchlist{
+                font-size: 20px
+
+            }
+
+            #panelTicketsList.panel-group .panel-heading + .panel-collapse > .list-group > .list-group-item.selected {
+                background-color: #D9ECCF;
+            !important;
+
+            }
+
+
+            .navbar-nav>li>a {
+                padding-right: 49px; !important;
+            }
+            .dropdown{
+                display:inherit !important;
+
+            }
+
+            #panel1 {
+                display: show;
+            }
+
+            #panel2 {
+                display: none;
+            }
+            #panel3 {
+                display: none;
+
+            }
+        </style>
+
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.js"></script>
+
+    </head>
+
+    <body>
+
+
+    <!-- Navigation -->
+    <nav class="navbar nav-green">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" style="
+		background-color: #89CBDF;">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><img src="vmwareHelpNowlogo1.jpg" style="width:189px; height=61px"/></a>
+            </div>
+
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contact Information  <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <div>
+                                    <p>Toll Free <strong> 1-888-VMWARE8 (1-888-869-2738)</strong><br> Premiere <strong> 650-842-9200 (29200 or 74357)</strong></br></p>
+                                    <small>
+                                        Note: 5 digit dialing is encouraged and should be utilized as applicable.
+                                    </small>
+                                </div>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <div>
+                                    <p> For Escalations on <strong> IT, HR, REW, Finance,</strong> or <strong>Other</strong>  areas please <a href="https://vmwarecorpdev3.service-now.com/kb_view_customer.do?sys_kb_id=a13a61396ff10a00d6477f512e3ee4be">click here.</a></p>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><button class="btn btn-primary" id="btnCreateTicket" type="button" data-toggle="modal" href="#formCreateTicket"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create New Ticket</button></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+
+    <div class="jumbotron">
+
+        <!-- Alert -->
+        <div>
+            <div class="row">
+                <div class="col-md-12">
+
+
+                    <div class="advisories alert alert-info alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h3>Advisories</h3>
+                        <ul class="list-unstyled">
+                            <g:evaluate var="jvar_advisory" object="true">
+
+                                var u = gs.getUserID();
+                                var gr = new GlideRecord("kb_knowledge");
+                                gr.addQuery('u_news','true');
+                                gr.addQuery('workflow_state','Published');
+                                gr.addQuery('active','true');
+                                gr.query();
+                                gr;
+                            </g:evaluate>
+                            <table class="table">
+                                <tbody>
+
+                                <tr>
+                                    <th>Number</th>
+                                    <th>Published Date</th>
+                                    <th>Short Description</th>
+                                    <th>Advisory</th>
+                                    <th>Status</th>
+                                </tr>
+                                <j:while test="${jvar_advisory.next()}">
+                                    <tr class='clickable-row' data-href="https://vmwarecorpdev3.service-now.com/kb_view_customer.do?sys_kb_id=cedc6dd26fce6500d647af512e3ee418">
+                                        <td>${HTML:jvar_advisory.getDisplayValue('number')}</td>
+                                        <td>${HTML:jvar_advisory.getDisplayValue('published')}</td>
+                                        <td>${HTML:jvar_advisory.getDisplayValue('short_description')}</td>
+                                        <td>${HTML:jvar_advisory.getDisplayValue('u_news')}</td>
+                                        <td>${HTML:jvar_advisory.getDisplayValue('workflow_state')}</td>
+                                    </tr>
+                                </j:while>
+                                </tbody>
+                            </table>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Search -->
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search Tickets"></input>
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--CONTAINER FLUID TWEAK-->
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+
+
+
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active"><div id="tickets"><a href="#"  role="tab"  data-toggle="tab">My Tickets</a></div></li>
+                <li class="active"><div id="approvals"><a href="#" role="tab" data-toggle="tab">My Approvals</a></div></li>
+                <li class="active"><div id="watchlist"><a href="#" role="tab" data-toggle="tab">My Watchlist</a></div></li>
+            </ul>
+        </div>
+
+        <br></br>
+
+        <div class="row">
+            <div class="">
+
+                <div>
+                    <div class="panel-group col-md-12" id="panelTicketsList"  style=" max-height: 300px;">
+
+                        <div class="panel panel-default" id="panel1">
+
+                            <div class="panel-heading" data-toggle="collapse" data-target="#hnTicketsPanel1">
+                                <b style="  font-size: 28px;font-weight: bolder;">My Tickets</b>
+                                <g:evaluate var="jvar_tickets" object="true">
+                                    var stateCount = "";
+                                    var u = gs.getUserID();
+                                    var count = new GlideAggregate('ticket');
+                                    count.addQuery('u_client',u);
+                                    count.addAggregate('COUNT', 'state');
+                                    count.query();
+                                    count;
+                                </g:evaluate>
+                                <br>
+                                <j:while test="${jvar_tickets.next()}">
+                                    <tr>
+                                        <td>${HTML:jvar_tickets.getDisplayValue('state')}</td> <td>(${jvar_tickets.getAggregate('COUNT', 'state');})</td>
+                                    </tr>
+                                </j:while>
+                                </br>
+                            </div>
+                            <g:evaluate var="jvar_tickets" object="true">
+                                var u = gs.getUserID();
+                                var gr = new GlideRecord("ticket");
+                                gr.addQuery('u_client',u);
+                                gr.addQuery('state','1');
+                                gr.orderByDesc('number');
+                                gr.query();
+                                gr;
+                            </g:evaluate>
+                            <j:if test="${jvar_tickets.getRowCount() > 0}">
+                                <div class="panel panel-default" id="panelTicketsList">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#hnTicketsPanel1">
+                                        <b>Open</b>
+                                    </div>
+                                    <div id="hnTicketsPanel1" class="panel-tickets panel-collapse collapse in">
+
+                                        <div class="list-group" >
+                                            <j:while test="${jvar_tickets.next()}">
+                                                <a class="list-group-item ticket-row" onclick="JavaScript:ticketSelected('${jvar_tickets.getValue('number')}','${jvar_tickets.getValue('sys_id')}')">
+                                                    <input type="hidden" id="hiddenTicketNumber" name="hiddenTicketNumber" value="${HTML:jvar_tickets.getValue('number')}"/>
+                                                    <input type="hidden" id="hiddenTicketSysID" name="hiddenTicketSysID" value="" />
+                                                    <div class="ticket-description" >
+
+                                                        <b>${HTML:jvar_tickets.getValue('number')}</b>${HTML:jvar_tickets.getValue('short_description')}
+
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <small>${HTML:jvar_tickets.getDisplayValue('state')}</small>
+                                                            <div class="pull-right"></div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </j:while>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </j:if>
+
+                            <g:evaluate var="jvar_tickets" object="true">
+                                var u = gs.getUserID();
+                                var gr = new GlideRecord("ticket");
+                                gr.addQuery('u_client',u);
+                                gr.addQuery('state','6');
+                                gr.orderByDesc('number');
+                                gr.query();
+                                gr;
+                            </g:evaluate>
+                            <j:if test="${jvar_tickets.getRowCount() > 0}">
+                                <div class="panel panel-default" id="panelTicketsList">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#hnTicketsPanelClosed">
+                                        <b>Resolved</b>
+                                    </div>
+                                    <div id="hnTicketsPanelClosed" class="panel-tickets panel-collapse collapse in">
+
+                                        <div class="list-group" >
+                                            <j:while test="${jvar_tickets.next()}">
+
+                                                <a class="list-group-item ticket-row" onclick="JavaScript:ticketSelected('${jvar_tickets.getValue('number')}','${jvar_tickets.getValue('sys_id')}')">
+                                                    <input type="hidden" id="hiddenTicketNumber" name="hiddenTicketNumber" value="${HTML:jvar_tickets.getValue('number')}"/>
+                                                    <input type="hidden" id="hiddenTicketSysID" name="hiddenTicketSysID" value="" />
+                                                    <div class="ticket-description" >
+
+                                                        <b>${HTML:jvar_tickets.getValue('number')}</b>${HTML:jvar_tickets.getValue('short_description')}
+
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <small>${HTML:jvar_tickets.getDisplayValue('state')}</small>
+                                                            <div class="pull-right"></div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </j:while>
+                                        </div>
+                                    </div>
+                                </div>
+                            </j:if>
+
+
+
+
+                            <g:evaluate var="jvar_tickets" object="true">
+                                var u = gs.getUserID();
+                                var gr = new GlideRecord("ticket");
+                                gr.addQuery('u_client',u);
+                                gr.addQuery('state','3');
+                                gr.orderByDesc('number');
+                                gr.query();
+                                gr;
+                            </g:evaluate>
+                            <j:if test="${jvar_tickets.getRowCount() > 0}">
+                                <div class="panel panel-default" id="panelTicketsList">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#hnTicketsPanelClosed1">
+                                        <b>Closed</b>
+                                    </div>
+                                    <div id="hnTicketsPanelClosed1" class="panel-tickets panel-collapse collapse in">
+
+                                        <div class="list-group" >
+                                            <j:while test="${jvar_tickets.next()}">
+
+                                                <a class="list-group-item ticket-row" onclick="JavaScript:ticketSelected('${jvar_tickets.getValue('number')}','${jvar_tickets.getValue('sys_id')}')">
+                                                    <input type="hidden" id="hiddenTicketNumber" name="hiddenTicketNumber" value="${HTML:jvar_tickets.getValue('number')}"/>
+                                                    <input type="hidden" id="hiddenTicketSysID" name="hiddenTicketSysID" value="" />
+                                                    <div class="ticket-description" >
+
+                                                        <b>${HTML:jvar_tickets.getValue('number')}</b>${HTML:jvar_tickets.getValue('short_description')}
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <small>${HTML:jvar_tickets.getDisplayValue('state')}</small>
+                                                            <div class="pull-right"></div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </j:while>
+                                        </div>
+                                    </div>
+                                </div>
+                            </j:if>
+
+
+                            <g:evaluate var="jvar_tickets" object="true">
+                                var u = gs.getUserID();
+                                var gr = new GlideRecord("ticket");
+                                gr.addQuery('u_client',u);
+                                gr.addQuery('state','-5');
+                                gr.orderByDesc('number');
+                                gr.query();
+                                gr;
+                            </g:evaluate>
+                            <j:if test="${jvar_tickets.getRowCount() > 0}">
+                                <div class="panel panel-default" id="panelTicketsList">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#hnTicketsPanelClosed2">
+                                        <b>Pending</b>
+                                    </div>
+                                    <div id="hnTicketsPanelClosed2" class="panel-tickets panel-collapse collapse in">
+                                        <div class="list-group" >
+                                            <j:while test="${jvar_tickets.next()}">
+
+                                                <a class="list-group-item ticket-row" onclick="JavaScript:ticketSelected('${jvar_tickets.getValue('number')}','${jvar_tickets.getValue('sys_id')}')">
+                                                    <input type="hidden" id="hiddenTicketNumber" name="hiddenTicketNumber" value="${HTML:jvar_tickets.getValue('number')}"/>
+                                                    <input type="hidden" id="hiddenTicketSysID" name="hiddenTicketSysID" value="" />
+                                                    <div class="ticket-description" >
+
+                                                        <b>${HTML:jvar_tickets.getValue('number')}</b>${HTML:jvar_tickets.getValue('short_description')}
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <small>${HTML:jvar_tickets.getDisplayValue('state')}</small>
+                                                            <div class="pull-right"></div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </j:while>
+                                        </div>
+                                    </div>
+                                </div>
+                            </j:if>
+
+
+                            <g:evaluate var="jvar_tickets" object="true">
+                                var u = gs.getUserID();
+                                var gr = new GlideRecord("ticket");
+                                gr.addQuery('u_client',u);
+                                gr.addQuery('state','-3');
+                                gr.orderByDesc('number');
+                                gr.query();
+                                gr;
+                            </g:evaluate>
+                            <j:if test="${jvar_tickets.getRowCount() > 0}">
+                                <div class="panel panel-default" id="panelTicketsList">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#hnTicketsPanelClosed3">
+                                        <b>Transferred out of HelpNow</b>
+                                    </div>
+                                    <div id="hnTicketsPanelClosed3" class="panel-tickets panel-collapse collapse in">
+
+                                        <div class="list-group" >
+                                            <j:while test="${jvar_tickets.next()}">
+
+                                                <a class="list-group-item ticket-row" onclick="JavaScript:ticketSelected('${jvar_tickets.getValue('number')}','${jvar_tickets.getValue('sys_id')}')">
+                                                    <input type="hidden" id="hiddenTicketNumber" name="hiddenTicketNumber" value="${HTML:jvar_tickets.getValue('number')}"/>
+                                                    <input type="hidden" id="hiddenTicketSysID" name="hiddenTicketSysID" value="" />
+                                                    <div class="ticket-description" >
+
+                                                        <b>${HTML:jvar_tickets.getValue('number')}</b>${HTML:jvar_tickets.getValue('short_description')}
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <small>${HTML:jvar_tickets.getDisplayValue('state')}</small>
+                                                            <div class="pull-right"></div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </j:while>
+                                        </div>
+                                    </div>
+                                </div>
+                            </j:if>
+
+                            <g:evaluate var="jvar_tickets" object="true">
+                                var u = gs.getUserID();
+                                var gr = new GlideRecord("ticket");
+                                gr.addQuery('u_client',u);
+                                gr.addQuery('state','7');
+                                gr.orderByDesc('number');
+                                gr.query();
+                                gr;
+                            </g:evaluate>
+                            <j:if test="${jvar_tickets.getRowCount() > 0}">
+                                <div class="panel panel-default" id="panelTicketsList">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#hnTicketsPanelClosed3">
+                                        <b>Closed/Skipped</b>
+                                    </div>
+                                    <div id="hnTicketsPanelClosed3" class="panel-tickets panel-collapse collapse in">
+
+                                        <div class="list-group" >
+                                            <j:while test="${jvar_tickets.next()}">
+
+                                                <a class="list-group-item ticket-row" onclick="JavaScript:ticketSelected('${jvar_tickets.getValue('number')}','${jvar_tickets.getValue('sys_id')}')">
+                                                    <input type="hidden" id="hiddenTicketNumber" name="hiddenTicketNumber" value="${HTML:jvar_tickets.getValue('number')}"/>
+                                                    <input type="hidden" id="hiddenTicketSysID" name="hiddenTicketSysID" value="" />
+                                                    <div class="ticket-description" >
+
+                                                        <b>${HTML:jvar_tickets.getValue('number')}</b>${HTML:jvar_tickets.getValue('short_description')}
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <small>${HTML:jvar_tickets.getDisplayValue('state')}</small>
+                                                            <div class="pull-right"></div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </j:while>
+                                        </div>
+                                    </div>
+                                </div>
+                            </j:if>
+
+                            <g:evaluate var="jvar_tickets" object="true">
+                                var u = gs.getUserID();
+                                var gr = new GlideRecord("ticket");
+                                gr.addQuery('u_client',u);
+                                gr.addQuery('state','8');
+                                gr.orderByDesc('number');
+                                gr.query();
+                                gr;
+                            </g:evaluate>
+                            <j:if test="${jvar_tickets.getRowCount() > 0}">
+                                <div class="panel panel-default" id="panelTicketsList">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#hnTicketsPanelClosed4">
+                                        <b>Cancelled</b>
+                                    </div>
+                                    <div id="hnTicketsPanelClosed4" class="panel-tickets panel-collapse collapse in">
+
+                                        <div class="list-group" >
+                                            <j:while test="${jvar_tickets.next()}">
+
+                                                <a class="list-group-item ticket-row" onclick="JavaScript:ticketSelected('${jvar_tickets.getValue('number')}','${jvar_tickets.getValue('sys_id')}')">
+                                                    <input type="hidden" id="hiddenTicketNumber" name="hiddenTicketNumber" value="${HTML:jvar_tickets.getValue('number')}"/>
+                                                    <input type="hidden" id="hiddenTicketSysID" name="hiddenTicketSysID" value="" />
+                                                    <div class="ticket-description" >
+
+                                                        <b>${HTML:jvar_tickets.getValue('number')}</b>${HTML:jvar_tickets.getValue('short_description')}
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <small>${HTML:jvar_tickets.getDisplayValue('state')}</small>
+                                                            <div class="pull-right"></div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </j:while>
+                                        </div>
+                                    </div>
+                                </div>
+                            </j:if>
+
+
+
+                            <g:evaluate var="jvar_tickets" object="true">
+                                var u = gs.getUserID();
+                                var gr = new GlideRecord("ticket");
+                                gr.addQuery('u_client',u);
+                                gr.addQuery('state','11');
+                                gr.orderByDesc('number');
+                                gr.query();
+                                gr;
+                            </g:evaluate>
+                            <j:if test="${jvar_tickets.getRowCount() > 0}">
+                                <div class="panel panel-default" id="panelTicketsList">
+                                    <div class="panel-heading" data-toggle="collapse" data-target="#hnTicketsPanelClosed5">
+                                        <b>Scheduled</b>
+                                    </div>
+                                    <div id="hnTicketsPanelClosed5" class="panel-tickets panel-collapse collapse in">
+                                        <div class="list-group" >
+                                            <j:while test="${jvar_tickets.next()}">
+
+                                                <a class="list-group-item ticket-row" onclick="JavaScript:ticketSelected('${jvar_tickets.getValue('number')}','${jvar_tickets.getValue('sys_id')}')">
+                                                    <input type="hidden" id="hiddenTicketNumber" name="hiddenTicketNumber" value="${HTML:jvar_tickets.getValue('number')}"/>
+                                                    <input type="hidden" id="hiddenTicketSysID" name="hiddenTicketSysID" value="" />
+                                                    <div class="ticket-description" >
+
+                                                        <b>${HTML:jvar_tickets.getValue('number')}</b>${HTML:jvar_tickets.getValue('short_description')}
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <small>${HTML:jvar_tickets.getDisplayValue('state')}</small>
+                                                            <div class="pull-right"></div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </j:while>
+                                        </div>
+                                    </div>
+                                </div>
+                            </j:if>
+
+
+
+
+
+
+
+                        </div>
+
+                        <!--MY TICKETS ENDS HERE-->
+                        <!-- Approvals-->
+                        <g:evaluate var="jvar_approvals" object="true">
+                            var u = gs.getUserID();
+                            var gr = new GlideRecord("sysapproval_approver");
+                            gr.addQuery('approver',u);
+                            gr.query();
+                            gr;
+                        </g:evaluate>
+                        <j:if test="${jvar_approvals.getRowCount() > 0}">
+                            <div class="panel panel-default" id="panel2">
+                                <div class="panel-heading" data-toggle="collapse" data-target="#hnTicketsPanel2">
+                                    <b style="  font-size: 28px;font-weight: bolder;">My Approvals</b>
+                                </div>
+                                <div id="hnTicketsPanel2" class="panel-tickets panel-collapse collapse in">
+
+
+                                    <div class="list-group">
+                                        <j:while test="${jvar_approvals.next()}">
+                                            <a class="list-group-item ticket-row" onclick="JavaScript:approvalTicketSelected('${jvar_approvals.getDisplayValue('sysapproval.parent')}','${jvar_approvals.getDisplayValue('sys_id')}','${jvar_approvals.getDisplayValue('sysapproval.parent.sys_id')}')">
+                                                <input type="hidden" id="hiddenRequestSysId" name="hiddenRequestSysId" value="${HTML:jvar_approvals.getValue('sysapproval')}"/>
+                                                <div class="ticket-description"><b>${HTML:jvar_approvals.getDisplayValue('sysapproval.parent')}</b></div>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <small>${HTML:jvar_approvals.getDisplayValue('state')}</small>
+                                                        <div class="pull-right">
+                                                            <small>Last Updated: 2015-07-16</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </j:while>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </j:if>
+                        <div class="panel panel-default" id="panel3">
+                            <div class="panel-heading" data-toggle="collapse" data-target="#hnTicketsPanel3">
+                                <b style="font-size: 28px;font-weight: bolder;">My Watchlist</b>
+                                <g:evaluate var="jvar_watchlist1" object="true">
+                                    var u = gs.getUserID();
+                                    var count = new GlideAggregate("ticket");
+                                    count.addQuery('watch_list',u);
+                                    count.query();
+                                    count;
+                                </g:evaluate>
+                                <j:if test="${jvar_watchlist1.next()}">
+                                    <tr>
+                                        <td>(${jvar_watchlist1.getRowCount()})</td>
+                                    </tr>
+                                </j:if>
+
+                            </div>
+                            <div id="hnTicketsPanel3" class="panel-tickets panel-collapse collapse in">
+                                <g:evaluate var="jvar_watchlist" object="true">
+                                    var u = gs.getUserID();
+                                    var gr = new GlideRecord("ticket");
+                                    gr.addQuery('watch_list',u);
+                                    gr.query();
+                                    gr;
+                                </g:evaluate>
+                                <div class="list-group">
+                                    <j:while test="${jvar_watchlist.next()}">
+                                        <a class="list-group-item ticket-row" onclick="JavaScript:ticketSelected('${jvar_watchlist.getValue('number')}','${jvar_watchlist.getValue('sys_id')}')">
+                                            <div class="ticket-description"><b>${HTML:jvar_watchlist.getValue('number')}</b> ${HTML:jvar_watchlist.getValue('short_description')}</div>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <small>Status:${HTML:jvar_watchlist.getDisplayValue('state')}</small>
+                                                    <div class="pull-right">
+                                                        <small>Last Updated: 2015-07-16</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </j:while>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div>
+                    <div class="panel col-md-9 panelTicketDetail hide">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 >
+                                    <b id="ticketNumber"></b>  <b id="ticketShortDescription"></b>
+                                </h4>
+                                <button type="button" class="close closeTicketPanel pull-right" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                <hr style="border-top:8px solid #6DB33F;; !important"/>
+                            </div>
+
+                        </div>
+
+                        <div class="row" id="checkTickets">
+                            <div class="col-md-12">
+                                <div class="form-group text-right">
+                                    <button type="button" class="btn btn-primary" onclick="JavaScript:requestApprove()" style="margin-right: 16px;">Approve</button>
+                                    <button type="button" class="btn btn-primary" onclick="JavaScript:requestReject()" style="margin-right: 57px;">Reject</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <dl class="dl-horizontal">
+                                    <dt>Reported by</dt>
+                                    <dd id="ticketReportedBy"></dd>
+                                    <dt>Requested for</dt>
+                                    <dd id="ticketRequestedFor"></dd>
+                                    <dt>Status</dt>
+                                    <dd id="ticketStatus"></dd>
+                                    <dt>Assignment group</dt>
+                                    <dd id="ticketAssignmentGroup"></dd>
+                                    <dt>Description</dt>
+                                    <dd id="ticketDescription"></dd>
+                                    <dt>Watchlist</dt>
+                                    <dd id="addedWatchlistUsers"></dd>
+                                    <dd> <div class="form-group">
+                                        <div class="input-group">
+                                            <g:ui_reference name="watchlistAdd" label ="watchlistAdd" id="watchlistAdd" table="sys_user"  completer="AJAXTableCompleter" /><a id="add_watchlist_user" onClick="JavaScript:addWatchlist()">Add User</a>
+                                        </div>
+                                    </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group pull-right">
+                                    <button id="manage_attachments_new" class="btn btn-default btn-xs" type="button" onClick="JavaScript:manageAttachment()">Manage Attachements (<span id="manageAttachmentCount"></span>)</button>
+                                </div>
+                                <h5><b>Comments</b></h5>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="well">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p id="ticketComment"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <textarea class="form-control" rows="3" id="addedComment" placeholder="Add Comments"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group text-right">
+                                    <button class="btn btn-primary" type="button" onClick="JavaScript:addComment()">Submit Comment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div  class ="footer">
+                <footer class="footerbar">
+                    <p class="panel-padded">Copyright © <script>document.write(new Date().getFullYear());</script>2015 VMware Inc. All rights reserved.</p>
+                    <ul class="footer-nav-links panel-padded">
+                        <li><a title="Contact Us" href="//www.vmware.com/company/contact/">Contact Us</a></li>
+                        <li><a title="Terms of Use" href="//www.vmware.com/help/legal.html">Terms of Use</a></li>
+                        <li><a title="Privacy" href="//www.vmware.com/help/privacy.html">Privacy</a></li>
+                        <li><a title="Accessibility" href="//www.vmware.com/accessibility.html">Accessibility</a></li>
+                        <li><a title="Help" href="//www.vmware.com/help/">Help</a></li>
+                    </ul>
+                </footer>
+            </div>
+
+        </div>
+    </div>
+
+    <br></br>
+
+
+
+    <!-- Create Ticket Modal -->
+    <div class="modal fade" id="formCreateTicket">
+        <div class="modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                    <h4 class="modal-title">Create New Ticket</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="inputSubject" placeholder="Subject"></input>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="3" id="description" placeholder="Description"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    Requested for
+                                    <g:ui_reference name="requestedFor" label ="requestedFor" id="requestedFor" table="sys_user" value="${gs.getUserID()}" displayvalue="${gs.getUser().getDisplayName()}" completer="AJAXTableCompleter" />
+                                </div>
+                            </div>
+                            <!-- <div class="form-group">
+                                 <label for="" class="control-label">Watchlist</label>
+                                 <div class="panel panel-default panelWatchlist">
+                                     &lt;!&ndash;   <span class="label label-info">Raghavendra Vooka</span>,
+                                        <s="label label-info">Chaspan clasndra Elango</span>&ndash;&gt;
+                                     <br></br> Add more...</small>
+                                 </div>
+                             </div>-->
+                        </div>
+                        <!--<div class="col-sm-6">
+                             <div class="form-group">
+                                 <label for="inputPriorty" class="control-label">Department / Tower</label>
+                                 <select id="category" class="selectpicker show-tick">
+                                     <option data-subtext="Account Management and Calendaring Laptop / Desktop">IT</option>
+                                     <option data-subtext="Business Travel Letter, Verification of Employment and Benefits">Human Resources</option>
+                                     <option data-subtext="Maintenance/Building Engineering, Seat Move and Schedule an Event">REW</option>
+                                     <option data-subtext="Payroll, Stock and Travel/Expense">Finance</option>
+                                     <option data-subtext="Services unrelated to a particular service center">Other</option>
+                                 </select>
+                             </div>
+                             <div class="form-group hidden">
+                                 <label for="inputPriorty" class="control-label">Priorty</label>
+                                 <div class="btn-group" data-toggle="buttons">
+                                     <label class="btn btn-default">
+                                         <input type="radio" id="priorty1" name="priorty" value="1" /> Critical
+                                     </label>
+                                     <label class="btn btn-default">
+                                         <input type="radio" id="priorty2" name="priorty" value="2" /> High
+                                     </label>
+                                     <label class="btn btn-default active">
+                                         <input type="radio" id="priorty3" name="priorty" value="3" /> Medium
+                                     </label>
+                                     <label class="btn btn-default">
+                                         <input type="radio" id="priorty4" name="priorty" value="4" /> Low
+                                     </label>
+                                 </div>
+                             </div>
+                            &lt;!&ndash; <div class="form-group panelManageAttachments">
+                                 <label for="inputPriorty" class="control-label">Manage Attachments</label>
+                                 <div class="well">
+                                     <input type="file" id="attachInputFile" class="padded-bottom"></input>
+                                     <div class="row">
+                                         <div class="col-sm-10">
+                                             <a>screenshot-12-04-15.png</a>
+                                         </div>
+                                         <div class="col-sm-2">
+                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+                                         </div>
+                                     </div>
+                                     <div class="row">
+                                         <div class="col-sm-10">
+                                             <a>approvals.pdf</a>
+                                         </div>
+                                         <div class="col-sm-2">
+                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>&ndash;&gt;
+                         </div>-->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Discard</button>
+                        <button type="button" class="btn btn-primary" onClick="JavaScript:createTicket()">Submit Ticket</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        /*$(function(){
+
+         $(".dropdown").hover(
+         function() {
+         $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
+         $(this).toggleClass('open');
+         $('b', this).toggleClass("caret caret-up");
+         },
+         function() {
+         $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
+         $(this).toggleClass('open');
+         $('b', this).toggleClass("caret caret-up");
+         });
+
+
+
+
+
+
+
+         });
+         */
+        jQuery.noConflict();
+
+        (function($) {
+            $("button.closeTicketPanel").on("click", function(){
+                $('#panelTicketsList').removeClass('col-md-3').addClass('col-md-12');
+                $('.panelTicketDetail').addClass('hide');
+            });
+            $("#panelTicketsList .list-group-item").on("click", function(){
+                $("#panelTicketsList .list-group-item").removeClass('selected');
+                $(this).addClass('selected');
+                if($('#panelTicketsList').hasClass('col-md-12')){
+                    $('#panelTicketsList').removeClass('col-md-12').addClass('col-md-3');
+                    $('.panelTicketDetail').removeClass('hide');
+                }
+            })
+            $('#panelTicketsList').on('hidden.bs.collapse', function () {
+                $('#panelTicketsList').removeClass('col-md-3').addClass('col-md-12');
+                $('.panelTicketDetail').addClass('hide');
+            });
+
+            $("#panel1").click(function(){
+                $("#checkTickets").hide();
+            });
+
+            $("#panel2").click(function(){
+                $("#checkTickets").show();
+            });
+
+            $("#tickets").click(function() {
+                $("#panel1").show(); $("#panel2").hide(); $("#panel3").hide();
+                $('#panelTicketsList').removeClass('col-md-3').addClass('col-md-12');
+                $('.panelTicketDetail').addClass('hide');
+            });
+
+            $("#approvals").click(function() {
+                $("#panel2").show();$("#panel1").hide();$("#panel3").hide();
+                $('#panelTicketsList').removeClass('col-md-3').addClass('col-md-12');
+                $('.panelTicketDetail').addClass('hide');
+            });
+
+            $("#watchlist").click(function() {
+                $("#panel3").show(); $("#panel1").hide();$("#panel2").hide();
+                $('#panelTicketsList').removeClass('col-md-3').addClass('col-md-12');
+                $('.panelTicketDetail').addClass('hide');
+            });
+
+            $(".clickable-row").click(function() {
+                window.document.location = $(this).data("href");
+            });
+        })(jQuery);
+
+    </script>
+    </body>
+    </html>
